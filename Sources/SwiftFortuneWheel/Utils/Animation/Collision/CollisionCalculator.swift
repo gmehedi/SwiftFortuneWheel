@@ -50,7 +50,9 @@ class CollisionCalculator {
     func calculateCollisionDegrees(sliceDegree: CGFloat, rotationDegreeOffset: CGFloat, rotationDegree: CGFloat, animationDuration: CFTimeInterval) {
         
         let sectorsCount = (rotationDegree / sliceDegree)
-        
+        if Int(sectorsCount) <= 0 {
+            return
+        }
         for index in 0..<Int(sectorsCount) {
             let degree = (rotationDegreeOffset + (CGFloat(index) * sliceDegree))
             collisionDegrees.append(Double(degree))
