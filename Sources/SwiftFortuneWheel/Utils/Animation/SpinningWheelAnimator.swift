@@ -25,9 +25,11 @@ protocol SpinningAnimatorProtocol: AnyObject, CollisionProtocol  {
 /// Spinning wheel animator
 class SpinningWheelAnimator: NSObject {
     
-    /// Animation object
+    /// Animation o
+    /// bject
     weak var animationObject: SpinningAnimatorProtocol?
     
+    public var speedAcceleration: CGFloat = 1.0
     /// Edge Collision Detector
     lazy var edgeCollisionDetector: CollisionDetector = CollisionDetector(animationObjectLayer: animationObject?.layerToAnimate)
     
@@ -71,7 +73,7 @@ class SpinningWheelAnimator: NSObject {
                                         onCenterCollision: ((_ progress: Double?) -> Void)? = nil) {
         
         let fullRotationDegree: CGFloat = 360
-        let speedAcceleration: CGFloat = 1
+        let speedAcceleration: CGFloat = self.speedAcceleration
         
         prepareAllCollisionDetectorsIfNeeded(with: fullRotationDegree,
                                              speed: speed,

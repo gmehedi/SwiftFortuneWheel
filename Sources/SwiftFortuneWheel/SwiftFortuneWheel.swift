@@ -42,6 +42,9 @@ public class SwiftFortuneWheel: SFWControl {
     }
     #endif
     
+    public var fullRotationsCount: Int = 1
+    public var maxRotationDuration: CFTimeInterval = 1
+    
     public var edgeCollisionDetectionOn: Bool = false
     
     public var centerCollisionDetectionOn: Bool = false
@@ -448,11 +451,11 @@ public extension SwiftFortuneWheel {
     ///   - fullRotationsCount: Full rotations until start deceleration
     ///   - animationDuration: Animation duration
     ///   - completion: Completion handler
-    func startRotationAnimation(rotationOffset: CGFloat, fullRotationsCount: Int = 13, animationDuration: CFTimeInterval = 5.000, _ completion: ((Bool) -> Void)?) {
+    func startRotationAnimation(rotationOffset: CGFloat, fullRotationsCount: Int = 13, animationDuration: CFTimeInterval = 1.000, _ completion: ((Bool) -> Void)?) {
         
         DispatchQueue.main.async {
             self.stopRotation()
-            self.animator.addRotationAnimation(fullRotationsCount: fullRotationsCount, animationDuration: animationDuration, rotationOffset: rotationOffset, completionBlock: completion, onEdgeCollision: { [weak self] progress in                        self?.impactIfNeeded(for: .edge)
+            self.animator.addRotationAnimation(fullRotationsCount: self.fullRotationsCount, animationDuration: self.maxRotationDuration, rotationOffset: rotationOffset, completionBlock: completion, onEdgeCollision: { [weak self] progress in                        self?.impactIfNeeded(for: .edge)
                 self?.onEdgeCollision?(progress)
             })
             { [weak self] (progress) in
@@ -484,7 +487,7 @@ public extension SwiftFortuneWheel {
     ///   - continuousRotationTime: Full rotation time in seconds before stops
     ///   - continuousRotationSpeed: Rotation speed
     ///   - completion: Completion handler
-    func startRotationAnimation(finishIndex: Int, continuousRotationTime: Int, continuousRotationSpeed: CGFloat = 4, _ completion: ((Bool) -> Void)?) {
+    func startRotationAnimation(finishIndex: Int, continuousRotationTime: Int, continuousRotationSpeed: CGFloat = 0.5, _ completion: ((Bool) -> Void)?) {
         let _index = finishIndex < self.slices.count ? finishIndex : self.slices.count - 1
         self.startContinuousRotationAnimation(with: continuousRotationSpeed)
         let deadline = DispatchTime.now() + DispatchTimeInterval.seconds(continuousRotationTime)
